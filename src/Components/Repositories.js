@@ -8,6 +8,8 @@ const Repositories = () => {
     const [selectedProjectId, setSelectedProjectId] = useState(null);
     const [selectedProjectName, setSelectedProjectName] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [date, setDate] = useState("2013-09-30T13:46:02Z");
+    const [changesSummary, setChangesSummary] = useState("");
 
     const fetchProjects = async () => {
         setLoading(true);
@@ -24,16 +26,55 @@ const Repositories = () => {
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-        setLoading(false)
+        setLoading(false);
     };
+
+    const fetchChanges = async () => {
+        console.log("fetching changes: ");
+        setLoading(true);
+
+        const data = {
+            gitlab_url: gitlabUrl,
+            private_token: accessToken,
+            date: date,
+            project_id: selectedProjectId
+        }
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/get_diffs', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Network response was not ok (${response.statusText})`);
+            }
+            
+            const responseData = await response.json();
+            setChangesSummary(responseData);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+
+        setLoading(false);
+    }
 
     const handleProjectSelect = (project) => {
         setSelectedProjectId(project.id);
         setSelectedProjectName(project.name);
+        fetchChanges();
     };
 
     return (
         <div>
+            {loading && (
+                <div className="loading-overlay">
+                    <div className="loading-spinner"></div>
+                </div>
+            )}
             <h1>Gitlab Updates Analyzer</h1>
             <div>
                 <input 
@@ -70,7 +111,7 @@ const Repositories = () => {
                 ))}
             </ul>
             <h2>
-                Selected project: {selectedProjectName}
+                Changes summary: {changesSummary}
             </h2>
         </div>
     );
