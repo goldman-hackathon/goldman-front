@@ -13,9 +13,10 @@ const Repositories = () => {
     const [stage, setStage] = useState(1);
     const [ownPrompt, setOwnPrompt] = useState("");
     const [questionResonse, setQuestionResponse] = useState("")
-    const [selectedGif, setSelectedGif] = useState('/loading.gif');
+    const [selectedGif, setSelectedGif] = useState('/on-tap-beer.gif');
     const [showGifOptions, setShowGifOptions] = useState(false);
     const gifOptions = [
+        '/on-tap-beer.gif',
         '/loading.gif',
         '/never-gonna.gif',
         '/fortnite-dance-fortnite.gif',
@@ -228,10 +229,10 @@ const Repositories = () => {
                         <button onClick={askQuestion}>askQuestion</button>
                     </div>
                 )}
-                {stage > 5 && (
+                {stage > 4 && (
                     <div className="questiionReponse">
                         <h3>AI's reponse: </h3>
-                        <ReactMarkdown>{JSON.parse(questionResonse).main_result}</ReactMarkdown>
+                        <ReactMarkdown>{questionResonse.main_result}</ReactMarkdown>
                     </div>
                 )}
             </main>
