@@ -103,3 +103,14 @@ li:hover {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.summary ul {
+    list-style-type: disc; /* or any other style you prefer */
+    padding-left: 20px; /* adjust as needed for proper indentation */
+}
+
+.summary li {
+    /* color: #e0e0e0; or any other color that fits your design */
+    margin-bottom: 10px; /* space between bullet points */
+    font-size: 16px; /* adjust size as needed */
+}

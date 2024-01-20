@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown'
 import './Repositories.css';
 
 const Repositories = () => {
@@ -8,7 +9,7 @@ const Repositories = () => {
     const [selectedProjectId, setSelectedProjectId] = useState(null);
     const [loading, setLoading] = useState(false);
     const [date, setDate] = useState(null);
-    const [changesSummary, setChangesSummary] = useState("");
+    const [changesSummary, setChangesSummary] = useState(null);
     const [stage, setStage] = useState(1);
 
     const fetchProjects = async () => {
@@ -131,13 +132,28 @@ const Repositories = () => {
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                 />
-                <button onClick={fetchChanges}>Get changes summary</button>
+                <button onClick={fetchChanges}>
+                    {stage > 3 ? "Regenerate response" : "Get changes summary"}
+                </button>
             </div>
              )}
             {stage > 3 && (
-            <h3>
-                Changes summary: {changesSummary}
-            </h3>
+            <div className="summary">
+                <h3> Changes summary. Feel free to regenreate it ⬆️</h3>
+                {/* <h3>{changesSummary}</h3> */}
+                <ReactMarkdown>{JSON.parse(changesSummary).main_result}</ReactMarkdown>
+                <h3>Merge requests merged since selected date:</h3>
+                {JSON.parse(changesSummary).merges.map(mr => (
+                    <li>
+                        Title: {mr.title}
+                        {mr.description && (
+                        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Description: {mr.description}</div>
+                        )}
+                    </li>
+                ))}
+                <div>
+                </div>
+            </div>
             )}
         </div>
     );
