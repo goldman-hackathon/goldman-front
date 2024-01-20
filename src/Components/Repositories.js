@@ -177,23 +177,19 @@ const Repositories = () => {
                                 <h3>Changes summary. Feel free to regenerate it ⬆️</h3>
                                 <ReactMarkdown>{JSON.parse(changesSummary).main_result}</ReactMarkdown>
                                 <h3>Merge requests merged since selected date:</h3>
-                                {JSON.parse(changesSummary).merges.map(mr => (
-                                    <div key={mr.title} className="merge-item">
-                                        <span className="keyword">Title:</span> {mr.title}
-                                        {mr.description && (
-                                            <div><span className="keyword">Description:</span> {mr.description}</div>
-                                        )}
-                                        {mr.report && (
-                                            <div><span className="keyword">Report:</span> {mr.report}</div>
-                                        )}
-                                    </div>
-                                ))}
+                                <ReactMarkdown>
+                                    {JSON.parse(changesSummary).merges.map(mr => (
+                                        `### Title: ${mr.title}\n\n` +
+                                        `${mr.description ? `**Description:** ${mr.description}\n\n` : ''}` +
+                                        `${mr.report ? `**Report:** ${mr.report}\n\n` : ''}`
+                                    )).join('')}
+                                </ReactMarkdown>
                             </div>
                         ) : (
                             <div>
                                 <h3>No merge requests merged since selected date</h3>
                             </div>
-                        )}  
+                        )}
                         <h2>Now you can ask the AI some questions about the changes yourself</h2>
                         <input 
                             className="text2"
