@@ -25,7 +25,17 @@ input[type="text"] {
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
-    width: 300px;
+    width: 20%;
+}
+
+.text2 {
+    background-color: #333;
+    color: #ffffff;
+    border: 1px solid #555;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    width: 85%;
 }
 
 button {
@@ -118,4 +128,8 @@ li:hover {
 .keyword {
     font-weight: bold;
     font-size: 1.1em; /* Adjust the size as needed */
+}
+
+.summary .merge-item {
+    margin-bottom: 15px;
 }
