@@ -139,20 +139,29 @@ const Repositories = () => {
              )}
             {stage > 3 && (
             <div className="summary">
+                {JSON.parse(changesSummary).merges.length > 0 && (
+                    <div>
                 <h3> Changes summary. Feel free to regenreate it ⬆️</h3>
-                {/* <h3>{changesSummary}</h3> */}
                 <ReactMarkdown>{JSON.parse(changesSummary).main_result}</ReactMarkdown>
                 <h3>Merge requests merged since selected date:</h3>
                 {JSON.parse(changesSummary).merges.map(mr => (
-                    <li>
-                        Title: {mr.title}
-                        {mr.description && (
-                        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Description: {mr.description}</div>
-                        )}
-                    </li>
+                    <ul>
+                    <span class="keyword">Title:</span> {mr.title}
+                    {mr.description && (
+                        <div><span class="keyword">Description:</span> {mr.description}</div>
+                    )}
+                    {mr.report && (
+                        <div><span class="keyword">Report:</span> {mr.report}</div>
+                    )}
+                    </ul>
                 ))}
-                <div>
                 </div>
+                )}
+                {JSON.parse(changesSummary).merges.length === 0 && (
+                    <div>
+                        <h3>No merge requests merged since selected date</h3>
+                    </div>
+                )}
             </div>
             )}
         </div>
