@@ -3,7 +3,7 @@ import './Repositories.css';
 
 const Repositories = () => {
     const [gitlabUrl, setGitlabUrl] = useState('https://gitlab.com');
-    const [accessToken, setAccessToken] = useState('glpat-wx3VU4svrvGmzvvN-sg-');
+    const [accessToken, setAccessToken] = useState('glpat-vhW7ZYkRC6JDFLqymUbs');
     const [projects, setProjects] = useState([]);
     const [selectedProjectId, setSelectedProjectId] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -80,9 +80,9 @@ const Repositories = () => {
             )}
             <h1>GitLab Updates Analyzer</h1>
             <h2>GitLab Analsis tool that tracks repository changes from a specific date.</h2>
-            {stage == 1 && (
+            {stage === 1 && (
             <div>
-                <h2>Please provide your gitlab url and accessToken: </h2>
+                <h3>Please provide your gitlab url and accessToken: </h3>
                 <div>
                     <input 
                         type="text"
@@ -101,9 +101,9 @@ const Repositories = () => {
             </div>
             )}
             {stage > 1 && (<div>
-                <h2>
+                <h3>
                     Select a project to analyze:
-                </h2>
+                </h3>
                 <ul>
                     {projects.map(project => (
                         <li key={project.id}>
@@ -124,7 +124,7 @@ const Repositories = () => {
             )}
             {stage > 2 && (
             <div>
-                <h2>Select a date to analyze from:</h2>
+                <h3>Select a date to analyze from:</h3>
                 <input
                     type="date"
                     id="dateInput"
@@ -135,9 +135,9 @@ const Repositories = () => {
             </div>
              )}
             {stage > 3 && (
-            <h2>
+            <h3>
                 Changes summary: {changesSummary}
-            </h2>
+            </h3>
             )}
         </div>
     );
