@@ -208,6 +208,7 @@ const Repositories = () => {
                 )}
                 {stage > 5 && (
                     <div className="questiionReponse">
+                        <h3>AI's reponse: </h3>
                         <ReactMarkdown>{JSON.parse(questionResonse).main_result}</ReactMarkdown>
                     </div>
                 )}
