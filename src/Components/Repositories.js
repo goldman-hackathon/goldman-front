@@ -69,11 +69,11 @@ const Repositories = () => {
                 },
                 body: JSON.stringify(data),
             });
-
+            // await sleep(90000); // Sleep for 2000 milliseconds (2 seconds)
             if (!response.ok) {
                 throw new Error(`Network response was not ok (${response.statusText})`);
             }
-            // await sleep(60000); // Sleep for 2000 milliseconds (2 seconds)
+
             const responseData = await response.json();
             setChangesSummary(responseData);
         } catch (error) {
