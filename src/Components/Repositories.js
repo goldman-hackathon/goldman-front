@@ -6,10 +6,10 @@ const Repositories = () => {
     const [accessToken, setAccessToken] = useState('glpat-wx3VU4svrvGmzvvN-sg-');
     const [projects, setProjects] = useState([]);
     const [selectedProjectId, setSelectedProjectId] = useState(null);
-    const [selectedProjectName, setSelectedProjectName] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [date, setDate] = useState("2013-09-30T13:46:02Z");
+    const [date, setDate] = useState(null);
     const [changesSummary, setChangesSummary] = useState("");
+    const [stage, setStage] = useState(1);
 
     const fetchProjects = async () => {
         setLoading(true);
@@ -26,6 +26,7 @@ const Repositories = () => {
         } catch (error) {
             console.error('Error fetching data:', error);
         }
+        setStage(2);
         setLoading(false);
     };
 
@@ -33,10 +34,12 @@ const Repositories = () => {
         console.log("fetching changes: ");
         setLoading(true);
 
+        const formattedDate = new Date(date).toISOString();
+
         const data = {
             gitlab_url: gitlabUrl,
             private_token: accessToken,
-            date: date,
+            date: formattedDate,
             project_id: selectedProjectId
         }
 
@@ -59,13 +62,13 @@ const Repositories = () => {
             console.error('Error fetching data:', error);
         }
 
+        setStage(4);
         setLoading(false);
     }
 
     const handleProjectSelect = (project) => {
         setSelectedProjectId(project.id);
-        setSelectedProjectName(project.name);
-        fetchChanges();
+        setStage(3);
     };
 
     return (
@@ -75,44 +78,67 @@ const Repositories = () => {
                     <div className="loading-spinner"></div>
                 </div>
             )}
-            <h1>Gitlab Updates Analyzer</h1>
+            <h1>GitLab Updates Analyzer</h1>
+            <h2>GitLab Analsis tool that tracks repository changes from a specific date.</h2>
+            {stage == 1 && (
             <div>
-                <input 
-                    type="text"
-                    value={gitlabUrl}
-                    onChange={(e) => setGitlabUrl(e.target.value)}
-                    placeholder="GitLab URL"
-                />
-                <input 
-                    type="text"
-                    value={accessToken}
-                    onChange={(e) => setAccessToken(e.target.value)}
-                    placeholder="Access Token"
-                />
-                <button onClick={fetchProjects}>Fetch Projects</button>
+                <h2>Please provide your gitlab url and accessToken: </h2>
+                <div>
+                    <input 
+                        type="text"
+                        value={gitlabUrl}
+                        onChange={(e) => setGitlabUrl(e.target.value)}
+                        placeholder="GitLab URL"
+                    />
+                    <input 
+                        type="text"
+                        value={accessToken}
+                        onChange={(e) => setAccessToken(e.target.value)}
+                        placeholder="Access Token"
+                    />
+                    <button onClick={fetchProjects}>Fetch Projects</button>
+                </div>
             </div>
-            <h2>
-                Select a project to analyze:
-            </h2>
-            <ul>
-                {projects.map(project => (
-                    <li key={project.id}>
-                        <label>
-                            <input
-                                type="radio"
-                                name="project"
-                                value={project.id}
-                                onChange={() => handleProjectSelect(project)}
-                                checked={selectedProjectId === project.id}
-                            />
-                            {project.name}
-                        </label>
-                    </li>
-                ))}
-            </ul>
+            )}
+            {stage > 1 && (<div>
+                <h2>
+                    Select a project to analyze:
+                </h2>
+                <ul>
+                    {projects.map(project => (
+                        <li key={project.id}>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="project"
+                                    value={project.id}
+                                    onChange={() => handleProjectSelect(project)}
+                                    checked={selectedProjectId === project.id}
+                                />
+                                {project.name}
+                            </label>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            )}
+            {stage > 2 && (
+            <div>
+                <h2>Select a date to analyze from:</h2>
+                <input
+                    type="date"
+                    id="dateInput"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                />
+                <button onClick={fetchChanges}>Get changes summary</button>
+            </div>
+             )}
+            {stage > 3 && (
             <h2>
                 Changes summary: {changesSummary}
             </h2>
+            )}
         </div>
     );
 };
