@@ -13,9 +13,10 @@ const Repositories = () => {
     const [stage, setStage] = useState(1);
     const [ownPrompt, setOwnPrompt] = useState("");
     const [questionResonse, setQuestionResponse] = useState("")
-    const [selectedGif, setSelectedGif] = useState('/fortnite-dance-fortnite.gif');
+    const [selectedGif, setSelectedGif] = useState('/loading.gif');
     const [showGifOptions, setShowGifOptions] = useState(false);
     const gifOptions = [
+        '/loading.gif',
         '/never-gonna.gif',
         '/fortnite-dance-fortnite.gif',
         '/beer.gif',
@@ -125,7 +126,7 @@ const Repositories = () => {
                 {showGifOptions && (
                     <ul>
                         {gifOptions.map((gif, index) => (
-                            <li key={index} onClick={() => selectGif(gif)}>
+                            <li style={{ width: '8%' }}key={index} onClick={() => selectGif(gif)}>
                                 <img src={gif} alt={`GIF ${index + 1}`} width="100" />
                             </li>
                         ))}
