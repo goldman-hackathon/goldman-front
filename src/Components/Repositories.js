@@ -23,7 +23,7 @@ const Repositories = () => {
         '/beer.gif',
         '/polish-dancing-cow-dancing.gif'
     ];
-    
+
     const selectGif = (gifUrl) => {
         setSelectedGif(gifUrl);
         setShowGifOptions(false);
@@ -47,6 +47,7 @@ const Repositories = () => {
         setStage(2);
         setLoading(false);
     };
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     const fetchChanges = async () => {
         setLoading(true);
@@ -68,11 +69,11 @@ const Repositories = () => {
                 },
                 body: JSON.stringify(data),
             });
-    
+
             if (!response.ok) {
                 throw new Error(`Network response was not ok (${response.statusText})`);
             }
-            
+            await sleep(90000); // Sleep for 2000 milliseconds (2 seconds)
             const responseData = await response.json();
             setChangesSummary(responseData);
         } catch (error) {
@@ -100,11 +101,11 @@ const Repositories = () => {
                 },
                 body: JSON.stringify(data),
             });
-    
+
             if (!response.ok) {
                 throw new Error(`Network response was not ok (${response.statusText})`);
             }
-            
+
             const responseData = await response.json();
             setQuestionResponse(responseData);
         } catch (error) {
@@ -127,7 +128,7 @@ const Repositories = () => {
                 {showGifOptions && (
                     <ul>
                         {gifOptions.map((gif, index) => (
-                            <li style={{ width: '8%' }}key={index} onClick={() => selectGif(gif)}>
+                            <li style={{ width: '8%' }} key={index} onClick={() => selectGif(gif)}>
                                 <img src={gif} alt={`GIF ${index + 1}`} width="100" />
                             </li>
                         ))}
@@ -147,13 +148,13 @@ const Repositories = () => {
                 {stage === 1 && (
                     <div className="input-section">
                         <h3>Please provide your GitLab URL and access token:</h3>
-                        <input 
+                        <input
                             type="text"
                             value={gitlabUrl}
                             onChange={(e) => setGitlabUrl(e.target.value)}
                             placeholder="GitLab URL"
                         />
-                        <input 
+                        <input
                             type="text"
                             value={accessToken}
                             onChange={(e) => setAccessToken(e.target.value)}
@@ -199,7 +200,7 @@ const Repositories = () => {
                 )}
                 {stage > 3 && (
                     <div className="summary">
-                        {JSON.parse(changesSummary).merges.length > 0 ? (
+                        {changesSummary && JSON.parse(changesSummary).merges.length > 0 ? (
                             <div>
                                 <h2>Changes summary. Feel free to regenerate it ⬆️</h2>
                                 <ReactMarkdown>{JSON.parse(changesSummary).main_result}</ReactMarkdown>
@@ -218,7 +219,7 @@ const Repositories = () => {
                             </div>
                         )}
                         <h2>Now you can ask the AI some questions about the changes yourself</h2>
-                        <input 
+                        <input
                             className="text2"
                             type="text"
                             value={ownPrompt}
