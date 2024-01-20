@@ -47,7 +47,7 @@ const Repositories = () => {
         setStage(2);
         setLoading(false);
     };
-    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+    // const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     const fetchChanges = async () => {
         setLoading(true);
@@ -73,7 +73,7 @@ const Repositories = () => {
             if (!response.ok) {
                 throw new Error(`Network response was not ok (${response.statusText})`);
             }
-            await sleep(90000); // Sleep for 2000 milliseconds (2 seconds)
+            // await sleep(60000); // Sleep for 2000 milliseconds (2 seconds)
             const responseData = await response.json();
             setChangesSummary(responseData);
         } catch (error) {
