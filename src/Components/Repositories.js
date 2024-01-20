@@ -13,6 +13,19 @@ const Repositories = () => {
     const [stage, setStage] = useState(1);
     const [ownPrompt, setOwnPrompt] = useState("");
     const [questionResonse, setQuestionResponse] = useState("")
+    const [selectedGif, setSelectedGif] = useState('/fortnite-dance-fortnite.gif');
+    const [showGifOptions, setShowGifOptions] = useState(false);
+    const gifOptions = [
+        '/never-gonna.gif',
+        '/fortnite-dance-fortnite.gif',
+        '/beer.gif',
+        '/polish-dancing-cow-dancing.gif'
+    ];
+    
+    const selectGif = (gifUrl) => {
+        setSelectedGif(gifUrl);
+        setShowGifOptions(false);
+    };
 
     const fetchProjects = async () => {
         setLoading(true);
@@ -107,9 +120,21 @@ const Repositories = () => {
 
     return (
         <div className="app-container">
+            <div className="gif-selector">
+                <button onClick={() => setShowGifOptions(!showGifOptions)}>Select GIF</button>
+                {showGifOptions && (
+                    <ul>
+                        {gifOptions.map((gif, index) => (
+                            <li key={index} onClick={() => selectGif(gif)}>
+                                <img src={gif} alt={`GIF ${index + 1}`} width="100" />
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
             {loading && (
                 <div className="loading-overlay">
-                    <div className="loading-spinner"></div>
+                    <div className="loading-spinner" style={{ background: `url(${selectedGif}) no-repeat center center` }}></div>
                 </div>
             )}
             <header>
@@ -174,9 +199,9 @@ const Repositories = () => {
                     <div className="summary">
                         {JSON.parse(changesSummary).merges.length > 0 ? (
                             <div>
-                                <h3>Changes summary. Feel free to regenerate it ⬆️</h3>
+                                <h2>Changes summary. Feel free to regenerate it ⬆️</h2>
                                 <ReactMarkdown>{JSON.parse(changesSummary).main_result}</ReactMarkdown>
-                                <h3>Merge requests merged since selected date:</h3>
+                                <h2>Merge requests merged since selected date:</h2>
                                 <ReactMarkdown>
                                     {JSON.parse(changesSummary).merges.map(mr => (
                                         `### Title: ${mr.title}\n\n` +

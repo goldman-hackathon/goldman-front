@@ -28,16 +28,6 @@ input[type="text"] {
     width: 20%;
 }
 
-.text2 {
-    background-color: #333;
-    color: #ffffff;
-    border: 1px solid #555;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 5px;
-    width: 85%;
-}
-
 button {
     background-color: #0d6efd;
     color: #ffffff;
@@ -102,11 +92,12 @@ li:hover {
 }
 
 .loading-spinner {
-    background: url('/beer.png') no-repeat center center;
+    background: url('') no-repeat center center;
     background-size: contain;
-    width: 200px;
-    height: 200px;
-    animation: spin 2s linear infinite;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    height: 100%;
 }
 
 @keyframes spin {
